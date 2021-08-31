@@ -3,8 +3,8 @@ use bevy::{app::AppExit, prelude::*, sprite::collide_aabb};
 mod movement;
 mod obstacles;
 
-use movement::movement;
-use obstacles::obstacles;
+use movement::movement_plugin;
+use obstacles::obstacles_plugin;
 
 const WIDTH: f32 = 600.;
 const HEIGHT: f32 = 200.;
@@ -29,8 +29,8 @@ fn main() {
     .add_plugins(DefaultPlugins)
     .add_startup_system(setup)
     .add_system(collision);
-    obstacles(&mut app);
-    movement(&mut app);
+    obstacles_plugin(&mut app);
+    movement_plugin(&mut app);
     app.run();
 }
 

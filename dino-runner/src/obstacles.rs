@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 use crate::{Obstacle, BASE_MOVEMENT_SPEED, GROUND_Y, WIDTH};
 
-pub(crate) fn obstacles(app: &mut App) {
+pub(crate) fn obstacles_plugin(app: &mut App) {
     app.add_system(spawn_obstacles)
         .add_system(move_obstacles)
         .add_system(despawn_obstacles)

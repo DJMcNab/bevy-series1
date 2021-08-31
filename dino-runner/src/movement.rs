@@ -9,7 +9,7 @@ enum MotionSystems {
 #[derive(AmbiguitySetLabel, Clone, Hash, Debug, PartialEq, Eq)]
 struct DinoMotionModifiers;
 
-pub(crate) fn movement(app: &mut App) {
+pub(crate) fn movement_plugin(app: &mut App) {
     app.add_startup_system(create_dino)
         // This ambiguity set labels are 'optional' - probably best not covered
         .add_system(
