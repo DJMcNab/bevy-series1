@@ -38,7 +38,6 @@ fn setup(mut commands: Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
     commands.spawn_bundle(OrthographicCameraBundle::new_2d());
     // Create the ground
     commands.spawn_bundle(SpriteBundle {
-        // Details? Where we're going, we don't need details
         material: materials.add(Color::YELLOW.into()),
         sprite: Sprite::new(Vec2::new(WIDTH, GROUND_HEIGHT)),
         transform: Transform::from_xyz(0., (-HEIGHT + GROUND_HEIGHT) / 2., 0.),
@@ -51,7 +50,7 @@ fn collision(
     dino: Query<(&Transform, &Sprite), With<Dinosaur>>,
     obstacles: Query<(&Transform, &Sprite), With<Obstacle>>,
 ) {
-    let (dino_pos, dino_sprite) = dino.single().expect("Dinosaur Exists");
+    let (dino_pos, dino_sprite) = dino.single().unwrap();
     for (obstacle_pos, obstacle_sprite) in obstacles.iter() {
         if let Some(_) = collide_aabb::collide(
             obstacle_pos.translation,

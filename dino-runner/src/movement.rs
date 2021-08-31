@@ -53,7 +53,7 @@ fn create_dino(mut commands: Commands, mut materials: ResMut<Assets<ColorMateria
     // Spawn our dinosaur
     commands
         .spawn_bundle(SpriteBundle {
-            // Details? Where we're going, we don't need details
+            // What do you mean a blue block isn't a dinosaur?
             material: materials.add(Color::BLUE.into()),
             sprite: Sprite::new(Vec2::new(40.0, DINO_HEIGHT)),
             transform: Transform::from_xyz(-WIDTH / 2. + 40., DINO_GROUND_Y, 0.),
@@ -73,7 +73,7 @@ fn jump(
     mut dino: Query<(&mut VerticalVelocity, &mut GroundState), With<Dinosaur>>,
     keyboard: Res<Input<KeyCode>>,
 ) {
-    let (mut dino_velocity, mut grounded) = dino.single_mut().expect("Dinosaur should exist");
+    let (mut dino_velocity, mut grounded) = dino.single_mut().unwrap();
     if matches!(*grounded, OnGround) && keyboard.pressed(KeyCode::Space) {
         *grounded = GroundState::InAir;
         (*dino_velocity).0 = 300.;
@@ -112,7 +112,7 @@ fn snap(
     mut dino: Query<(&mut VerticalVelocity, &GroundState), With<Dinosaur>>,
     keyboard: Res<Input<KeyCode>>,
 ) {
-    let (mut velocity, grounded) = dino.single_mut().expect("Dino exists");
+    let (mut velocity, grounded) = dino.single_mut().unwrap();
     if (keyboard.pressed(KeyCode::Down) || keyboard.pressed(KeyCode::S))
         && matches!(grounded, InAir)
     {
