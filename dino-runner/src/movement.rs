@@ -64,6 +64,18 @@ fn jump(
     }
 }
 
+fn snap(
+    mut dino: Query<(&mut VerticalVelocity, &GroundState), With<Dinosaur>>,
+    keyboard: Res<Input<KeyCode>>,
+) {
+    let (mut velocity, grounded) = dino.single_mut().unwrap();
+    if (keyboard.pressed(KeyCode::Down) || keyboard.pressed(KeyCode::S))
+        && matches!(grounded, GroundState::InAir)
+    {
+        velocity.0 -= 600.;
+    }
+}
+
 fn vertical_movement(
     time: Res<Time>,
     mut query: Query<(&mut Transform, &GroundState, &VerticalVelocity)>,
@@ -90,17 +102,5 @@ fn grounding(mut query: Query<(&mut GroundState, &mut Transform, &Sprite)>) {
             *grounded = GroundState::OnGround;
             transform.translation.y = base_height;
         }
-    }
-}
-
-fn snap(
-    mut dino: Query<(&mut VerticalVelocity, &GroundState), With<Dinosaur>>,
-    keyboard: Res<Input<KeyCode>>,
-) {
-    let (mut velocity, grounded) = dino.single_mut().unwrap();
-    if (keyboard.pressed(KeyCode::Down) || keyboard.pressed(KeyCode::S))
-        && matches!(grounded, GroundState::InAir)
-    {
-        velocity.0 -= 600.;
     }
 }
