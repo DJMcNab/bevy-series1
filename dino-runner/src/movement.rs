@@ -64,7 +64,7 @@ fn jump(
             || keyboard.pressed(KeyCode::W))
     {
         *grounded = GroundState::InAir;
-        (*dino_velocity).0 = 300.;
+        dino_velocity.0 = 300.;
     }
 }
 
