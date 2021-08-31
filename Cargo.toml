@@ -1,2 +1,3 @@
 [workspace]
-members = ["bevy-intro"]
+members = ["bevy-intro", "bevy-dino"]
+default-members = ["bevy-dino"]
