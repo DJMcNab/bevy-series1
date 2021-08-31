@@ -40,9 +40,6 @@ enum GroundState {
 use GroundState::*;
 
 use crate::{Dinosaur, GROUND_Y, WIDTH};
-struct Falls {
-    ground_height: f32,
-}
 
 struct VerticalVelocity(f32);
 
@@ -59,14 +56,7 @@ fn create_dino(mut commands: Commands, mut materials: ResMut<Assets<ColorMateria
             transform: Transform::from_xyz(-WIDTH / 2. + 40., DINO_GROUND_Y, 0.),
             ..Default::default()
         })
-        .insert_bundle((
-            Dinosaur,
-            GroundState::OnGround,
-            VerticalVelocity(0.),
-            Falls {
-                ground_height: DINO_GROUND_Y,
-            },
-        ));
+        .insert_bundle((Dinosaur, GroundState::OnGround, VerticalVelocity(0.)));
 }
 
 fn jump(
@@ -99,11 +89,12 @@ fn gravity(time: Res<Time>, mut query: Query<(&GroundState, &mut VerticalVelocit
     }
 }
 
-fn grounding(mut query: Query<(&mut GroundState, &mut Transform, &Falls)>) {
-    for (mut grounded, mut transform, fallness) in query.iter_mut() {
-        if transform.translation.y < fallness.ground_height {
+fn grounding(mut query: Query<(&mut GroundState, &mut Transform, &Sprite)>) {
+    for (mut grounded, mut transform, sprite) in query.iter_mut() {
+        let base_height = GROUND_Y + sprite.size.y / 2.;
+        if transform.translation.y < base_height {
             *grounded = OnGround;
-            transform.translation.y = fallness.ground_height;
+            transform.translation.y = base_height;
         }
     }
 }
