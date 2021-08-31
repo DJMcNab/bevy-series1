@@ -193,13 +193,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "bevy-dino"
-version = "0.1.0"
-dependencies = [
- "bevy",
-]
-
-[[package]]
 name = "bevy-glsl-to-spirv"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1235,6 +1228,13 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "dino-runner"
+version = "0.1.0"
+dependencies = [
+ "bevy",
 ]
 
 [[package]]
