@@ -12,18 +12,13 @@ struct DinoMotionModifiers;
 pub(crate) fn movement_plugin(app: &mut App) {
     app.add_startup_system(create_dino)
         // This ambiguity set labels are 'optional' - probably best not covered
-        .add_system(
-            jump.in_ambiguity_set(DinoMotionModifiers)
-                .before(MotionSystems::MotionApplied),
-        )
-        .add_system(
-            snap.in_ambiguity_set(DinoMotionModifiers)
-                .before(MotionSystems::MotionApplied),
-        )
-        .add_system(
-            gravity
+        .add_system_set(
+            SystemSet::new()
                 .in_ambiguity_set(DinoMotionModifiers)
-                .before(MotionSystems::MotionApplied),
+                .before(MotionSystems::MotionApplied)
+                .with_system(jump)
+                .with_system(snap)
+                .with_system(gravity),
         )
         .add_system(
             vertical_movement
