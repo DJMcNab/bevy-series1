@@ -32,7 +32,6 @@ enum GroundState {
     OnGround,
     InAir,
 }
-use GroundState::*;
 
 use crate::{Dinosaur, GROUND_Y, WIDTH};
 
@@ -59,7 +58,7 @@ fn jump(
     keyboard: Res<Input<KeyCode>>,
 ) {
     let (mut dino_velocity, mut grounded) = dino.single_mut().unwrap();
-    if matches!(*grounded, OnGround) && keyboard.pressed(KeyCode::Space) {
+    if matches!(*grounded, GroundState::OnGround) && keyboard.pressed(KeyCode::Space) {
         *grounded = GroundState::InAir;
         (*dino_velocity).0 = 300.;
     }
@@ -70,7 +69,7 @@ fn vertical_movement(
     mut query: Query<(&mut Transform, &GroundState, &VerticalVelocity)>,
 ) {
     for (mut pos, ground, velocity) in query.iter_mut() {
-        if matches!(ground, InAir) {
+        if matches!(ground, GroundState::InAir) {
             pos.translation.y += velocity.0 * time.delta_seconds();
         }
     }
@@ -78,7 +77,7 @@ fn vertical_movement(
 
 fn gravity(time: Res<Time>, mut query: Query<(&GroundState, &mut VerticalVelocity)>) {
     for (ground, mut velocity) in query.iter_mut() {
-        if matches!(ground, InAir) {
+        if matches!(ground, GroundState::InAir) {
             velocity.0 -= 500. * time.delta_seconds();
         }
     }
@@ -88,7 +87,7 @@ fn grounding(mut query: Query<(&mut GroundState, &mut Transform, &Sprite)>) {
     for (mut grounded, mut transform, sprite) in query.iter_mut() {
         let base_height = GROUND_Y + sprite.size.y / 2.;
         if transform.translation.y < base_height {
-            *grounded = OnGround;
+            *grounded = GroundState::OnGround;
             transform.translation.y = base_height;
         }
     }
@@ -100,7 +99,7 @@ fn snap(
 ) {
     let (mut velocity, grounded) = dino.single_mut().unwrap();
     if (keyboard.pressed(KeyCode::Down) || keyboard.pressed(KeyCode::S))
-        && matches!(grounded, InAir)
+        && matches!(grounded, GroundState::InAir)
     {
         velocity.0 -= 600.;
     }
