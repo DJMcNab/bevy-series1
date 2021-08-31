@@ -58,7 +58,11 @@ fn jump(
     keyboard: Res<Input<KeyCode>>,
 ) {
     let (mut dino_velocity, mut grounded) = dino.single_mut().unwrap();
-    if matches!(*grounded, GroundState::OnGround) && keyboard.pressed(KeyCode::Space) {
+    if matches!(*grounded, GroundState::OnGround)
+        && (keyboard.pressed(KeyCode::Space)
+            || keyboard.pressed(KeyCode::Up)
+            || keyboard.pressed(KeyCode::W))
+    {
         *grounded = GroundState::InAir;
         (*dino_velocity).0 = 300.;
     }
@@ -69,8 +73,8 @@ fn snap(
     keyboard: Res<Input<KeyCode>>,
 ) {
     let (mut velocity, grounded) = dino.single_mut().unwrap();
-    if (keyboard.pressed(KeyCode::Down) || keyboard.pressed(KeyCode::S))
-        && matches!(grounded, GroundState::InAir)
+    if matches!(grounded, GroundState::InAir)
+        && (keyboard.pressed(KeyCode::Down) || keyboard.pressed(KeyCode::S))
     {
         velocity.0 -= 600.;
     }
