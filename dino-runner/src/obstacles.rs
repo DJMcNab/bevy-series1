@@ -6,10 +6,11 @@ pub(crate) fn obstacles_plugin(app: &mut App) {
     app.add_system(spawn_obstacles)
         .add_system(move_obstacles)
         .add_system(despawn_obstacles)
+        // A timer lets you act after a certain amount of time has passed
         .insert_resource(EnemyTimer(Timer::from_seconds(3., true)));
 }
 
-struct EnemyTimer(pub Timer);
+struct EnemyTimer(Timer);
 struct ObstacleVelocity(f32);
 
 const CACTUS_HEIGHT: f32 = 45.;
@@ -20,10 +21,15 @@ fn spawn_obstacles(
     mut commands: Commands,
     mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
+    // Timers need to be 'ticked' manually - for example, this allows them to be more usable for
+    // slowing down your simulation
     timer.0.tick(time.delta());
     if timer.0.just_finished() {
         commands
             .spawn_bundle(SpriteBundle {
+                // Note that in this example, we don't deduplicate the materials
+                // However, this does not create a memory leak because when there are no remaining references to an asset, it is
+                // freed
                 material: materials.add(Color::GREEN.into()),
                 sprite: Sprite::new(Vec2::new(20., CACTUS_HEIGHT)),
                 transform: Transform::from_xyz(

@@ -1,17 +1,21 @@
 use bevy::prelude::*;
 
+/// This enum is used as a label for systems. Labels are used to declare 'dependencies' between systems, i.e.
 #[derive(SystemLabel, Clone, Hash, Debug, PartialEq, Eq)]
 enum MotionSystems {
     MotionApplied,
     GroundCollision,
 }
 
+/// This struct is used as a marker
 #[derive(AmbiguitySetLabel, Clone, Hash, Debug, PartialEq, Eq)]
 struct DinoMotionModifiers;
 
+// Notice that the only thing exported from this module is movement_plugin - rust-analyzer can confirm
+// that by looking at completions for `use movement::` in the parent
+// The 'Plugin' has encapsulated this logic
 pub(crate) fn movement_plugin(app: &mut App) {
     app.add_startup_system(create_dino)
-        // This ambiguity set labels are 'optional' - probably best not covered
         .add_system_set(
             SystemSet::new()
                 .in_ambiguity_set(DinoMotionModifiers)

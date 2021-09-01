@@ -1,5 +1,6 @@
 use bevy::{app::AppExit, prelude::*, sprite::collide_aabb};
 
+// Declare the modules for the sub-components of our program
 mod movement;
 mod obstacles;
 
@@ -45,6 +46,7 @@ fn main() {
     // Note that the setting the window details needs to be before adding [`DefaultPlugins`] - this might change later
     // Add the default plugins, so bevy sets up windows and rendering foro us to use
     .add_plugins(DefaultPlugins)
+    // The startup system runs
     .add_startup_system(setup)
     .add_system(collision);
     // Initialise the custom modules. An alternative would be to use a 'proper' `Plugin` -
@@ -60,6 +62,7 @@ fn setup(
     // This is generally used for spawning entities, which requires manipulating the data structures in a
     // way which cannot be done concurrently
     // Note that this means that the entities are not spawned until the end of the relevant stage
+    // As this is in a startup system, by the time of the first frame, this will be spawned
     mut commands: Commands,
     mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
