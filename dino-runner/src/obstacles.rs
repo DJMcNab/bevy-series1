@@ -49,7 +49,10 @@ fn move_obstacles(mut enemies: Query<(&mut Transform, &ObstacleVelocity)>, time:
     }
 }
 
-fn despawn_obstacles(mut enemies: Query<(Entity, &Transform)>, mut commands: Commands) {
+fn despawn_obstacles(
+    mut enemies: Query<(Entity, &Transform), With<Obstacle>>,
+    mut commands: Commands,
+) {
     for (enemy, transform) in enemies.iter_mut() {
         if transform.translation.x.abs() > WIDTH * 2. {
             commands.entity(enemy).despawn();
