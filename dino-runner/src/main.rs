@@ -4,8 +4,8 @@ use bevy::{app::AppExit, prelude::*, sprite::collide_aabb};
 mod movement;
 mod obstacles;
 
-use movement::movement_plugin;
-use obstacles::obstacles_plugin;
+use movement::DinoMotionPlugin;
+use obstacles::ObstaclesPlugin;
 
 /// The width of the game area
 // We need to use the trailing `.` because these numbers are floats - won't be automatically inferred
@@ -27,34 +27,33 @@ struct Dinosaur;
 struct Obstacle;
 
 fn main() {
-    let mut app = App::new();
     // Set the details of the window
-    app.insert_resource(WindowDescriptor {
-        width: WIDTH,
-        height: HEIGHT,
-        // We override the scale factor to make the game's size better depending on your screen size.
-        // Rule of thumb: 1080p: `1.`; 1440p: 2.; 4k: 3.
-        scale_factor_override: Some(3.),
-        // We turn the `&'static str` "Dinosaurs" into a heap allocated `String`, which is required for
-        // this field of `WindowDescriptor`
-        title: "Dinosaurs".into(),
-        // Disabling resizing means that we don't have to worry about content being incorrectly off-screen
-        // (barring https://github.com/bevyengine/bevy/issues/2751, which breaks with different scales)
-        resizable: false,
-        ..Default::default()
-    })
-    // Note that the setting the window details needs to be before adding [`DefaultPlugins`] - this might change later
-    // Add the default plugins, so bevy sets up windows and rendering foro us to use
-    .add_plugins(DefaultPlugins)
-    // The startup system runs
-    .add_startup_system(setup)
-    .add_system(collision);
-    // Initialise the custom modules. An alternative would be to use a 'proper' `Plugin` -
-    // a plugin ends up being very
-    obstacles_plugin(&mut app);
-    movement_plugin(&mut app);
-    // Run the app
-    app.run();
+    App::new()
+        .insert_resource(WindowDescriptor {
+            width: WIDTH,
+            height: HEIGHT,
+            // We override the scale factor to make the game's size better depending on your screen size.
+            // Rule of thumb: 1080p: `1.`; 1440p: 2.; 4k: 3.
+            scale_factor_override: Some(3.),
+            // We turn the `&'static str` "Dinosaurs" into a heap allocated `String`, which is required for
+            // this field of `WindowDescriptor`
+            title: "Dinosaurs".into(),
+            // Disabling resizing means that we don't have to worry about content being incorrectly off-screen
+            // (barring https://github.com/bevyengine/bevy/issues/2751, which breaks with different scales)
+            resizable: false,
+            ..Default::default()
+        })
+        // Note that the setting the window details needs to be before adding [`DefaultPlugins`] - this might change later
+        // Add the default plugins, so bevy sets up windows and rendering foro us to use
+        .add_plugins(DefaultPlugins)
+        // The startup system runs
+        .add_startup_system(setup)
+        .add_system(collision)
+        // Initialise the custom modules.
+        .add_plugin(DinoMotionPlugin)
+        .add_plugin(ObstaclesPlugin)
+        // Run the app
+        .run();
 }
 
 fn setup(

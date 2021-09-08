@@ -2,12 +2,16 @@ use bevy::prelude::*;
 
 use crate::{Obstacle, BASE_MOVEMENT_SPEED, GROUND_Y, WIDTH};
 
-pub(crate) fn obstacles_plugin(app: &mut App) {
-    app.add_system(spawn_obstacles)
-        .add_system(move_obstacles)
-        .add_system(despawn_obstacles)
-        // A timer lets you act after a certain amount of time has passed
-        .insert_resource(EnemyTimer(Timer::from_seconds(3., true)));
+pub(crate) struct ObstaclesPlugin;
+
+impl Plugin for ObstaclesPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_system(spawn_obstacles)
+            .add_system(move_obstacles)
+            .add_system(despawn_obstacles)
+            // A timer helps track the passing of time within your system
+            .insert_resource(EnemyTimer(Timer::from_seconds(3., true)));
+    }
 }
 
 struct EnemyTimer(Timer);
