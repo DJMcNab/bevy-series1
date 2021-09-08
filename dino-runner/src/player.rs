@@ -1,4 +1,6 @@
+use crate::{Dinosaur, GROUND_Y, WIDTH};
 use bevy::prelude::*;
+
 // Notice that the only thing exported from this module is movement_plugin - rust-analyzer can confirm
 // that by looking at completions for `use movement::` in the parent
 pub(crate) struct DinoMotionPlugin;
@@ -40,12 +42,9 @@ enum GroundState {
     InAir,
 }
 
-use crate::{Dinosaur, GROUND_Y, WIDTH};
-
 struct VerticalVelocity(f32);
 
 const DINO_HEIGHT: f32 = 60.;
-const DINO_GROUND_Y: f32 = GROUND_Y + DINO_HEIGHT / 2.;
 
 fn create_dino(mut commands: Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
     // Spawn our dinosaur
@@ -54,7 +53,7 @@ fn create_dino(mut commands: Commands, mut materials: ResMut<Assets<ColorMateria
             // What do you mean a blue block isn't a dinosaur?
             material: materials.add(Color::BLUE.into()),
             sprite: Sprite::new(Vec2::new(40.0, DINO_HEIGHT)),
-            transform: Transform::from_xyz(-WIDTH / 2. + 40., DINO_GROUND_Y, 0.),
+            transform: Transform::from_xyz(-WIDTH / 2. + 40., GROUND_Y + DINO_HEIGHT / 2., 0.),
             ..Default::default()
         })
         .insert_bundle((Dinosaur, GroundState::OnGround, VerticalVelocity(0.)));
