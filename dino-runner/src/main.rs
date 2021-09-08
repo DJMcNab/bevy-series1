@@ -1,11 +1,11 @@
 use bevy::{app::AppExit, prelude::*, sprite::collide_aabb};
 
 // Declare the modules for the sub-components of our program
-mod movement;
 mod obstacles;
+mod player;
 
-use movement::DinoMotionPlugin;
 use obstacles::ObstaclesPlugin;
+use player::DinoMotionPlugin;
 
 /// The width of the game area
 // We need to use the trailing `.` because these numbers are floats - won't be automatically inferred
