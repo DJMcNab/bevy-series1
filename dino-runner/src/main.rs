@@ -18,7 +18,7 @@ const GROUND_HEIGHT: f32 = 15.;
 /// The y level of the top of the ground
 const GROUND_Y: f32 = (-HEIGHT) / 2. + GROUND_HEIGHT;
 /// The movement speed stationary objects move
-const BASE_MOVEMENT_SPEED: f32 = -200.;
+const BASE_MOVEMENT_SPEED: f32 = -300.;
 
 /// Marks the entity which is our player. There will only ever be one
 /// entity with the [`Dinosaur`] component

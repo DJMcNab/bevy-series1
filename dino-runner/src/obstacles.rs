@@ -10,7 +10,7 @@ impl Plugin for ObstaclesPlugin {
             .add_system(move_obstacles)
             .add_system(despawn_obstacles)
             // A timer helps track the passing of time within your system
-            .insert_resource(EnemyTimer(Timer::from_seconds(3., true)));
+            .insert_resource(EnemyTimer(Timer::from_seconds(1.5, true)));
     }
 }
 
