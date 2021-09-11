@@ -92,8 +92,7 @@ fn collision(
     obstacles: Query<(&Transform, &Sprite), With<Obstacle>>,
 ) {
     // We use the `single` method here because we know that there will only be one dinosaur.
-    // The unwrap will panic (broadly, stop the program) if that isn't true
-    let (dino_pos, dino_sprite) = dino.single().unwrap();
+    let (dino_pos, dino_sprite) = dino.single();
     for (obstacle_pos, obstacle_sprite) in obstacles.iter() {
         // collide_aabb is a very simple, built in utility for collision detection
         if let Some(_) = collide_aabb::collide(

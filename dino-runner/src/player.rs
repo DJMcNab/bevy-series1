@@ -63,7 +63,7 @@ fn jump(
     mut dino: Query<(&mut VerticalVelocity, &mut GroundState), With<Dinosaur>>,
     keyboard: Res<Input<KeyCode>>,
 ) {
-    let (mut dino_velocity, mut grounded) = dino.single_mut().unwrap();
+    let (mut dino_velocity, mut grounded) = dino.single_mut();
     if matches!(*grounded, GroundState::OnGround)
         && keyboard.any_pressed([KeyCode::Space, KeyCode::Up, KeyCode::W])
     {
@@ -76,7 +76,7 @@ fn snap(
     mut dino: Query<(&mut VerticalVelocity, &GroundState), With<Dinosaur>>,
     keyboard: Res<Input<KeyCode>>,
 ) {
-    let (mut velocity, grounded) = dino.single_mut().unwrap();
+    let (mut velocity, grounded) = dino.single_mut();
     if matches!(grounded, GroundState::InAir) && keyboard.any_pressed([KeyCode::Down, KeyCode::S]) {
         velocity.0 -= 600.;
     }
